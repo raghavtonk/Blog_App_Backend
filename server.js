@@ -22,10 +22,9 @@ const store = new mongoDBSession({
 // CORS Options
 const corsOptions = {
     origin: ['http://localhost:3000', 'https://blog-app-omega-coral.vercel.app'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+   
     credentials: true, 
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    optionsSuccessStatus: 204 
+   
 };
 
 
@@ -64,6 +63,7 @@ app.use(session({
 app.use((req, res, next) => {
     console.log('Session:', req.session);
     console.log('Cookies:', req.cookies);
+    console.log('env',process.env.NODE_ENV)
     next();
 });
 
