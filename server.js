@@ -55,8 +55,8 @@ app.use(session({
     saveUninitialized: false,
     resave: false,
     cookie: {
-        secure: process.env.NODE_ENV === 'production', // Secure cookies only in production
-        sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // 'None' for cross-origin in production
+        secure: true,
+        sameSite: 'none',// 'None' for cross-origin in production
         httpOnly: true, // Prevent client-side access to cookies
         maxAge: 1000 * 60 * 60 * 24 // Set a max age for the cookie (e.g., 24 hours)
     }
