@@ -45,7 +45,7 @@ mongoose.connect(process.env.MONGO_URI)
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+console.log('env',process.env.NODE_ENV)
 // Session Middleware
 app.use(session({
     secret: process.env.SECRET_KEY,
