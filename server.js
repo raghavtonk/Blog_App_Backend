@@ -37,6 +37,7 @@ mongoose.connect(process.env.MONGO_URI)
     console.log(clc.redBright(error));
 });
 // middlewares'
+app.use(cors(corsOptions));
 app.options('*', cors(corsOptions)); // Handle preflight requests
 
 app.use(express.json());
