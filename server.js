@@ -19,6 +19,13 @@ const store = new mongoDBSession({
     uri: process.env.MONGO_URI,
     collection: "sessions"
 })
+const corsOptions = {
+    origin: ['http://localhost:3000', 'https://blog-app-omega-coral.vercel.app'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    optionsSuccessStatus: 204
+  };
 //mongoDB connection 
 mongoose.connect(process.env.MONGO_URI)
 .then(()=>{
@@ -29,11 +36,9 @@ mongoose.connect(process.env.MONGO_URI)
     console.log(clc.redBright("DB connection error"));
     console.log(clc.redBright(error));
 });
-// middlewares
-app.use(cors({
-    origin: ['http://localhost:3000','https://blog-app-omega-coral.vercel.app'],
-    credentials: true 
-}))
+// middlewares'
+app.options('*', cors(corsOptions)); // Handle preflight requests
+
 app.use(express.json());
 app.use(express.urlencoded({extended:true}))
 app.use(session({
