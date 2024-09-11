@@ -31,9 +31,6 @@ const corsOptions = {
 // Apply CORS middleware before session and routes
 app.use(cors(corsOptions)); // Allow cross-origin requests with credentials
 
-// Handle preflight requests for all routes
-app.options('*', cors(corsOptions));
-
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
@@ -62,6 +59,13 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24 // Set a max age for the cookie (e.g., 24 hours)
     }
 }));
+
+// Log Session and Cookies
+app.use((req, res, next) => {
+    console.log('Session:', req.session);
+    console.log('Cookies:', req.cookies);
+    next();
+});
 
 // Routes Middleware
 app.use('/auth', authRoutes);
