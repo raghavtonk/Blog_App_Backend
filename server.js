@@ -23,13 +23,13 @@ const store = new mongoDBSession({
 const corsOptions = {
     origin: ['http://localhost:3000', 'https://blog-app-omega-coral.vercel.app'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    credentials: true, // Allow credentials (cookies) to be included
+    credentials: true, 
     allowedHeaders: ['Content-Type', 'Authorization'],
-    optionsSuccessStatus: 204 // For successful preflight requests
+    optionsSuccessStatus: 204 
 };
 
-// Apply CORS middleware before session and routes
-app.use(cors(corsOptions)); // Allow cross-origin requests with credentials
+
+app.use(cors(corsOptions));
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
@@ -55,7 +55,7 @@ app.use(session({
     cookie: {
         secure: process.env.NODE_ENV === 'production', // Secure cookies only in production
         sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // 'None' for cross-origin in production
-        // httpOnly: true, // Prevent client-side access to cookies
+        httpOnly: true, // Prevent client-side access to cookies
         maxAge: 1000 * 60 * 60 * 24 // Set a max age for the cookie (e.g., 24 hours)
     }
 }));
