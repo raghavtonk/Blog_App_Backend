@@ -20,15 +20,18 @@ const store = new mongoDBSession({
 });
 
 // CORS Options
-const corsOptions = {
-    origin: ['http://localhost:3000', 'https://blog-app-omega-coral.vercel.app'],
+// const corsOptions = {
+//     origin: ['http://localhost:3000', 'https://blog-app-omega-coral.vercel.app'],
    
-    credentials: true, 
+//     credentials: true, 
    
-};
+// };
 
-
-app.use(cors(corsOptions));
+app.use(cors({
+    origin: ['http://localhost:3000','https://blog-app-omega-coral.vercel.app'],
+    credentials: true 
+}))
+// app.use(cors(corsOptions));
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
