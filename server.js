@@ -31,7 +31,7 @@ mongoose.connect(process.env.MONGO_URI)
 });
 // middlewares
 app.use(cors({
-    origin: ['http://localhost:3000'],
+    origin: ['http://localhost:3000','https://blog-app-omega-coral.vercel.app'],
     credentials: true 
 }))
 app.use(express.json());
@@ -41,6 +41,10 @@ app.use(session({
     store: store,
     saveUninitialized: false,
     resave: false,
+    cookie: {
+        secure: true,
+        sameSite: 'None'
+      }
    
 }))
 // Routes middleware
