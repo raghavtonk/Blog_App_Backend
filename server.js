@@ -42,8 +42,9 @@ app.use(session({
     saveUninitialized: false,
     resave: false,
     cookie: {
-        secure: true,
-        sameSite: 'None'
+        secure: process.env.NODE_ENV === 'production', // Secure only in production
+        sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // None for cross-origin, Lax for local
+        httpOnly: true
       }
    
 }))
