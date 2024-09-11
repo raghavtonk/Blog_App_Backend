@@ -1,8 +1,8 @@
 const express = require('express');
 require('dotenv').config();
 const cors = require('cors');
-const clc = require("cli-color");
-const mongoose = require("mongoose");
+const clc = require('cli-color');
+const mongoose = require('mongoose');
 const session = require('express-session');
 const mongoDBSession = require('connect-mongodb-session')(session);
 
@@ -13,10 +13,10 @@ const followRouter = require('./routers/followRouter');
 
 // Constants
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000; // Default port if not specified
 const store = new mongoDBSession({
     uri: process.env.MONGO_URI,
-    collection: "sessions"
+    collection: 'sessions'
 });
 
 // CORS Options
@@ -29,7 +29,7 @@ const corsOptions = {
 };
 
 // Apply CORS middleware before session and routes
-app.use(cors(corsOptions));  // Allow cross-origin requests with credentials
+app.use(cors(corsOptions)); // Allow cross-origin requests with credentials
 
 // Handle preflight requests for all routes
 app.options('*', cors(corsOptions));
@@ -37,11 +37,11 @@ app.options('*', cors(corsOptions));
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
-        console.log(clc.yellowBright("Mongoose DataBase connected successfully"));
+        console.log(clc.yellowBright('Mongoose DataBase connected successfully'));
         startServer(); // Start the server after successful DB connection
     })
     .catch((error) => {
-        console.log(clc.redBright("DB connection error"));
+        console.log(clc.redBright('DB connection error'));
         console.log(clc.redBright(error));
     });
 
@@ -58,7 +58,8 @@ app.use(session({
     cookie: {
         secure: process.env.NODE_ENV === 'production', // Secure cookies only in production
         sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // 'None' for cross-origin in production
-        httpOnly: true // Prevent client-side access to cookies
+        httpOnly: true, // Prevent client-side access to cookies
+        maxAge: 1000 * 60 * 60 * 24 // Set a max age for the cookie (e.g., 24 hours)
     }
 }));
 
