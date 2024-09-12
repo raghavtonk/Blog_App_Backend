@@ -57,14 +57,14 @@ const followUserController = async (req, res) => {
 //list of person we are following
 const getFollowingListController = async (req, res) => {
   const followerUserId = req.session.user.userId;
-  const SKIP = Number(req.query.skip) || 0;
+ ;
   const errorMessage = await followDataValidation({ followerUserId });
 
   if (errorMessage?.message) {
     return res.send({ status: 400, message: errorMessage.message });
   }
   try {
-    const followListDB = await following_list({ followerUserId, SKIP });
+    const followListDB = await following_list({ followerUserId});
     if (followListDB.length === 0) {
       return res.send({
         status: 204,
@@ -151,7 +151,7 @@ const getSumOfFollowingController = async (req, res) => {
       return res.send({
         status: 204,
         message: "0 Following",
-        data: { totalFollowings: 0 },
+        data: [{ totalFollowings: 0 }],
       });
     }
     return res.send({
@@ -177,7 +177,7 @@ const getSumOfFollowerController = async (req, res) => {
       return res.send({
         status: 204,
         message: "0 Follower",
-        data: { totalFollower: 0 },
+        data: [{ totalFollower: 0 }],
       });
     }
     return res.send({

@@ -19,7 +19,7 @@ const follow_user = ({ followerUserId, followingUserId }) => {
     }
   });
 };
-const following_list = ({ SKIP, followerUserId }) => {
+const following_list = ({followerUserId }) => {
   return new Promise(async (resolve, reject) => {
     try {
     // first method using populate
@@ -37,8 +37,6 @@ const following_list = ({ SKIP, followerUserId }) => {
       const followingList = await followSchema.aggregate([
         {$match: { followerUserId },},
         {$sort: { creationDateTime: -1 },},
-        {$skip: SKIP,},
-        {$limit: LIMIT,},
       ]);
 
       const followingUserIdsList = followingList.map(

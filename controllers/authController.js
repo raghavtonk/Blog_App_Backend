@@ -66,23 +66,7 @@ const loginController = async(req,res)=>{
         req.session.user = {userId: userDB._id,username: userDB.username , userEmail: userDB.email}
        
         return res.send({status: 200, message: "login successfully", data: userDB});
-        // req.session.save((err) => {
-        //     if (err) {
-        //         console.log("Session save error:", err);
-        //         return res.status(500).send({ status: 500, message: "Failed to save session", error: err });
-        //     }
-
-        //     // Return successful login response after session is saved
-        //     return res.status(200).send({
-        //         status: 200,
-        //         message: "Login successful",
-        //         data: {
-        //             userId: userDB._id,
-        //             username: userDB.username,
-        //             userEmail: userDB.email,
-        //         },
-        //     });
-        // });
+   
     }catch(error){
         console.log(error)
         return res.send({status: 500, message: "Internal server Error", error: error});
