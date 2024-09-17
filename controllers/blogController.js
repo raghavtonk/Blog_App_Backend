@@ -6,6 +6,8 @@ const {
   edit_blog,
   findBlogById,
   delete_blog,
+  read_deleted_blog,
+  restore_blog,
 } = require("../models/blogModel");
 const { following_list } = require("../models/followModel");
 const { blogDataValidation } = require("../utils/blogUtil");
@@ -206,10 +208,74 @@ const deleteBlogController = async (req, res) => {
     });
   }
 };
+
+const readDeletedBlogController = async(req,res)=>{
+  const userId = req.session.user.userId;
+
+  try {
+    const deletedBlogDB = await read_deleted_blog({userId});
+    if(deletedBlogDB.length === 0){
+      return res.send({
+        status: 204,
+        message: "No Deleted Blog Found",
+      });
+    }
+    return res.send({
+      status: 200,
+      message: 'Deleted blogs retrieved successfully',
+      data: deletedBlogDB
+    })
+  } catch (error) {
+    console.log(error);
+    return res.send({
+      status: 500,
+      message: "Internal server error",
+      error: error,
+    });
+  }
+}
+const restoreBlogsController = async(req,res)=>{
+  const { blogId } = req.body;
+  const userId = req.session.user.userId;
+  //data Validation
+  if (!blogId) return res.send({ status: 400, message: "missing BlogId" });
+  if (!ObjectId.isValid(blogId))
+    return res.send({ status: 400, message: "Incorrect format of BlogId" });
+  if (typeof blogId !== "string")
+    return res.send({ status: 400, message: "BlogId is not a text" });
+
+  try {
+    const checkBlogDB = await findBlogById({ blogId });
+    if (!checkBlogDB)
+      return res.send({ status: 400, message: "Blog not found by id" });
+    if (!checkBlogDB.userId.equals(userId)) {
+      // ownwership case
+      return res.send({
+        status: 403,
+        message: "unauthorized user trying to delete the blog",
+      });
+    }
+    const restoredBlogDB = await restore_blog({ blogId });
+    return res.send({
+      status: 200,
+      message: "Blog restored successfully",
+      data: restoredBlogDB,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.send({
+      status: 500,
+      message: "Internal server error",
+      error: error,
+    });
+  }
+}
 module.exports = {
   createBlogController,
   getBlogsController,
   getMyBlogsController,
   editBlogController,
   deleteBlogController,
+  readDeletedBlogController,
+  restoreBlogsController,
 };

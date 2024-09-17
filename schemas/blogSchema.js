@@ -25,7 +25,14 @@ const blogSchema = new Schema({
         type: Schema.Types.ObjectId,
         required: true,
         ref: "user", //FK to user collections
-    }
+    },
+    isDeleted:{
+        type: Boolean,
+        default: false,
+    },
+    deletionDateTime:{
+        type: String,
+    },
 });
 
 module.exports = mongoose.model("blog",blogSchema);
