@@ -15,7 +15,6 @@ const blogSchema = new Schema({
         required: true,
         minLength: 3,
         maxLength: 1000,
-        trim: true,
     },
     creationDateTime: {
         type: String,
